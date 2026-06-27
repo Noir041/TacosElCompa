@@ -1,0 +1,26 @@
+<?php
+// Mostrar errores para debug (quitar en producción)
+error_reporting(E_ALL);
+ini_set('display_errors', 0); // 0 en producción
+
+// DATOS DE INFINITYFREE (REEMPLAZA CON TUS DATOS REALES)
+$host = 'sql210.infinityfree.com';        // <- El que aparece en tu panel
+$db   = 'if0_42249305_elcompa'; // <- El nombre que te dieron
+$user = 'if0_42249305';              // <- Tu usuario
+$pass = 'JaneDoe29';      // <- Tu contraseña
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES => false,
+    ]);
+} catch (PDOException $e) {
+    // En producción, no mostrar el error real
+    error_log('Error DB: ' . $e->getMessage());
+    die('Error de conexión a la base de datos. Revise los datos.');
+}
+?>
